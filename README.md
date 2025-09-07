@@ -2,6 +2,11 @@
 
 `AtomTable` is a React component for displaying and interacting with real-time token pair data. It leverages [Jotai](https://jotai.org/) for atomic state management and [TanStack Query](https://tanstack.com/query/latest) for efficient data fetching and caching. The table is designed for high performance, modularity, and live updates.
 
+### API notes:
+
+You will have to use a no-cors extension from the chrome web store during development
+`https://chromewebstore.google.com/detail/allow-cors-access-control/` - or any other extension with similar functionality.
+
 ## Approach
 
 ### 1. Atomic State Management
