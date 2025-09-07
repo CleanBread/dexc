@@ -1,0 +1,42 @@
+@import "tailwindcss";
+
+:root {
+  --color-accent-base: #F2F2F2;
+  --color-accent-brand: #C1E22E;
+  --color-secondary: #F2F2F3;
+  --color-foreground: #18181B;
+  --color-foreground-muted: #71717A;
+  --color-alpha: #ffffff;
+  --color-card: #FFFFFF;
+  --color-border: #E4E4E7;
+  --color-bg: #F8F8F8;
+}
+
+@theme inline {
+  --color-accent-base: var(--color-accent-base);
+  --color-accent-brand: var(--color-accent-brand);
+  --color-secondary: var(--color-secondary);
+  --color-foreground: var(--color-foreground);
+  --color-foreground-muted: var(--color-foreground-muted);
+  --color-alpha: var(--color-alpha);
+  --color-card: var(--color-card);
+  --color-border: var(--color-border);
+  --color-bg: var(--color-bg);
+}
+
+@layer base {
+  html, body {
+    @apply h-screen
+  }
+}
+
+@layer components {
+  .button {
+    @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 cursor-pointer;
+    @apply px-4 py-2 bg-gray-900 text-white hover:bg-gray-800 active:bg-gray-950;
+  }
+  
+  .row {
+    @apply grid grid-cols-[minmax(200px,_1fr)_minmax(170px,_1fr)_minmax(120px,_1fr)_minmax(200px,_1fr)_minmax(150px,_1fr)_minmax(100px,_1fr)_minmax(100px,_1fr)_minmax(100px,_1fr)_minmax(100px,_1fr)_minmax(180px,_1fr)_minmax(120px,_1fr)_minmax(120px,_1fr)_minmax(130px,_1fr)] [&>div]:w-full;
+  }
+}
