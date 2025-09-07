@@ -9,6 +9,8 @@ type Options = {
   significantFractionInSmallValue?: boolean
 }
 
+BigNumber.config({ EXPONENTIAL_AT: 1e9 })
+
 const toLocaleString = (value: number | string, opts?: Options) => {
   const { digits = 3, replaceSymbol = ' ', floorRounding = true, cutFractionalZero = true, significantFractionInSmallValue = true } = opts || {}
 

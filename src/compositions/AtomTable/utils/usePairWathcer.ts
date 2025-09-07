@@ -25,8 +25,20 @@ const usePairWatcher = ({ pairAtom }: Props) => {
     }
 
     const unsubscribeSocket = subscribeToken(payload)
-    const unsubscribeUpdates = pairWatcher.subscribe(serializeObj(payload), ({ swaps, info }) => {
 
+    return () => {
+      unsubscribeSocket()
+    }
+  }, [ pairAddress, token1Address, chainId, subscribeToken ])
+
+  useEffect(() => {
+    const payload = {
+      pair: pairAddress,
+      token: token1Address,
+      chain: chainIdToName(chainId),
+    }
+
+    const unsubscribeUpdates = pairWatcher.subscribe(serializeObj(payload), ({ swaps, info }) => {
       if (swaps) {
         const latestSwap = swaps.filter((swap) => !('isOutlier' in swap) || !swap.isOutlier).pop()
 
@@ -84,7 +96,6 @@ const usePairWatcher = ({ pairAtom }: Props) => {
     })
 
     return () => {
-      unsubscribeSocket()
       unsubscribeUpdates()
     }
   }, [ pairAddress, token1Address, chainId ])
