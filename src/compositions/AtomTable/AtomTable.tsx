@@ -7,6 +7,8 @@ import { splitAtom } from 'jotai/utils'
 import dayjs from 'dayjs'
 import { ArrowDownIcon, BanIcon, DatabaseBackupIcon, LoaderCircleIcon } from 'lucide-react'
 import { BigNumber } from 'bignumber.js'
+import type { RowComponentProps } from 'react-window'
+import { List } from 'react-window'
 
 import restApi from '@/helpers/api/restApi'
 import chainIdToName from '@/helpers/chainIdToName'
@@ -28,10 +30,6 @@ type PairRowProps = {
 
 const PairRow: React.FC<PairRowProps> = memo(({ pairAtom }) => {
   const pair = useAtomValue(pairAtom)
-
-  usePairWatcher({
-    pairAtom,
-  })
 
   return (
     <div
@@ -108,7 +106,7 @@ type HeaderProps = {
 
 const Header: React.FC<HeaderProps> = ({ sortAtom }) => {
   return (
-    <div className="sticky top-0 min-w-fit row [&>div]:bg-gray-200 [&>div]:p-1 divide-x divide-border z-10 font-semibold">
+    <div className="h-0 sticky top-0 min-w-fit row [&>div]:bg-gray-200 [&>div]:p-1 divide-x divide-border z-10 font-semibold">
       <div className="sticky left-0 z-10">Token Symbol</div>
       <div>Exchange</div>
       <HeaderSort title="Price (USD)" sortAtom={sortAtom} sortKey="price" />
@@ -122,6 +120,24 @@ const Header: React.FC<HeaderProps> = ({ sortAtom }) => {
       <HeaderSort title="Buys" sortAtom={sortAtom} sortKey="buys" />
       <HeaderSort title="Sells" sortAtom={sortAtom} sortKey="sells" />
       <HeaderSort title="Liquidity" sortAtom={sortAtom} sortKey="liquidity" />
+    </div>
+  )
+}
+
+const RowWrapper = (
+  { pairsAtoms, index, style }: RowComponentProps<{
+    pairsAtoms: PrimitiveAtom<ScannerResult>[]
+  }>
+) => {
+  const pairAtom = pairsAtoms[index]
+
+  usePairWatcher({
+    pairAtom,
+  })
+
+  return (
+    <div style={style}>
+      <PairRow key={`${pairAtom}`} pairAtom={pairAtom} />
     </div>
   )
 }
@@ -177,13 +193,20 @@ const TableContent: React.FC<TableContentProps> = ({ data, filtersAtom, sortAtom
 
   return (
     <div className="w-full divide-y divide-border overflow-hidden">
-      <div className="divide-y h-[90%] overflow-auto divide-border rounded-xl">
-        <Header sortAtom={sortAtom} />
-        {
+      <div className="divide-y h-[90%] overflow-hidden divide-border rounded-xl">
+        {/* {
           pairsAtoms.map((pairAtom) => (
             <PairRow key={`${pairAtom}`} pairAtom={pairAtom} />
           ))
-        }
+        } */}
+        <List
+          rowComponent={RowWrapper}
+          rowCount={pairsAtoms.length}
+          rowHeight={40}
+          rowProps={{ pairsAtoms }}
+        >
+          <Header sortAtom={sortAtom} />
+        </List>
       </div>
       <Pagination filtersAtom={filtersAtom} totalRows={data.totalRows} />
     </div>
